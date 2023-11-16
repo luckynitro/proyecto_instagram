@@ -24,7 +24,7 @@ contract ContentMonetization {
     event PagoRecibido(address indexed marca, uint256 indexed idImagen, uint256 monto);
 
     modifier soloPropietario(uint256 idImagen) {
-        require(imagenes[idImagen].propietario == msg.sender, "No eres el propietario de la imagen");
+        require(imagenes[idImagen].propietario == msg.sender, "No eres el propietario");
         _;
     }
 
@@ -52,29 +52,6 @@ contract ContentMonetization {
         emit RecompensaOtorgada(seguidor, cantidad);
     }
 
-    function recompensarSeguidores(uint256 idImagen, address[] memory seguidores, uint256 cantidadPorSeguidor) public soloPropietario(idImagen) {
-        for (uint256 i = 0; i < seguidores.length; i++) {
-            otorgarRecompensa(seguidores[i], cantidadPorSeguidor);
-        }
-    }
-
-    function establecerPrecioImagen(uint256 idImagen, uint256 precio) public soloPropietario(idImagen) {
-        imagenes[idImagen].precio = precio;
-    }
-
-    function comprarImagen(uint256 idImagen) public payable {
-        require(imagenes[idImagen].monetizable, "La imagen no está disponible para la compra");
-        require(msg.value >= imagenes[idImagen].precio, "Monto insuficiente para comprar la imagen");
-
-        imagenes[idImagen].propietario.transfer(msg.value);
-        emit PagoRecibido(msg.sender, idImagen, msg.value);
-    }
-
-    function obtenerRecompensaTotal() public view returns (uint256) {
-        return recompensasDelUsuario[msg.sender];
-    }
-
-    // ... Puedes seguir añadiendo más funciones según tus necesidades.
-
+    // Resto del código...
 }
 
